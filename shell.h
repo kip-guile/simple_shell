@@ -1,62 +1,33 @@
 #ifndef SHELL_H
 #define SHELL_H
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <stdlib.h>
+#define _GNU_SOURCE
+
 #include <stdio.h>
-#include <unistd.h>
+#include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include <errno.h>
 
-/*==================================================*/
-/*============     Shell_Init       ==============*/
-/*==================================================*/
+extern char **environ;
 
-int main(int ac, char **av, char **env);
-void prompt(void);
-void handle(int signals);
-void _EOF(char *buffer);
-void shell_exit(char **command);
-
-/*==================================================*/
-/*============     create_child       ==============*/
-/*==================================================*/
-
-void create_child(char **command, char *name, char **env, int cicles);
-int change_dir(const char *path);
-
-/*==================================================*/
-/*============        Execute       ==============*/
-/*==================================================*/
-
-void execute(char **command, char *name, char **env, int cicles);
-void print_env(char **env);
-char **_getPATH(char **env);
-void msgerror(char *name, int cicles, char **command);
-
-/*==================================================*/
-/*============          Tokening      ==============*/
-/*==================================================*/
-
-char **tokening(char *buffer, const char *s);
-
-/*==================================================*/
-/*============     Free Memory      ==============*/
-/*==================================================*/
-
-void free_dp(char **command);
-void free_exit(char **command);
-
-/*==================================================*/
-/*============  Auxiliar_Functions    ==============*/
-/*==================================================*/
-
+/** command line functions**/
+char *_get_path(char **env);
+int _value_path(char **arg, char **env);
+char *_getline_command(void);
+void _getenv(char **env);
+char **_get_token(char *lineptr);
+void _exit_command(char **args, char *lineptr, int _exit);
+int _frk_func(char **arg, char **av, char **env,
+char *lineptr, int np, int c);
+/** string functions **/
 int _strcmp(char *s1, char *s2);
-unsigned int _strlen(char *s);
+size_t _strncmp(char *s1, char *s2, size_t n);
+int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
-int _atoi(char *s);
 char *_strcat(char *dest, char *src);
+int _putchar(char c);
 
-/*============ END      ==============*/
-
-#endif /* SHELL_H */
+#endif
